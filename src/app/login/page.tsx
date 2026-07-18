@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { signIn } from "@/app/actions/auth";
+import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 
 export default function LoginPage() {
   const [state, formAction, pending] = useActionState(signIn, null);
@@ -47,6 +48,14 @@ export default function LoginPage() {
             {pending ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </form>
+
+        <div className="my-4 flex items-center gap-3">
+          <div className="h-px flex-1 bg-black/10 dark:bg-white/10" />
+          <span className="text-xs text-black/40 dark:text-white/40">hoặc</span>
+          <div className="h-px flex-1 bg-black/10 dark:bg-white/10" />
+        </div>
+        <GoogleSignInButton />
+
         <p className="mt-4 text-sm text-black/60 dark:text-white/60">
           Chưa có tài khoản?{" "}
           <Link href="/signup" className="font-medium text-blue-600 dark:text-blue-400">
