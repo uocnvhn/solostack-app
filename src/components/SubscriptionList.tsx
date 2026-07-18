@@ -1,4 +1,4 @@
-import { Subscription } from "@/lib/mock-data";
+import { Subscription } from "@/lib/types";
 import { daysUntil } from "@/lib/subscription-insights";
 
 type SubscriptionListProps = {

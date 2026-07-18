@@ -1,13 +1,7 @@
-export type Subscription = {
-  id: string;
-  name: string;
-  category: string;
-  monthlyCost: number;
-  renewalDate: string;
-  trialEndsAt?: string;
-  duplicateGroup?: string;
-};
+import { Subscription } from "./types";
 
+// Dữ liệu demo — chỉ dùng khi user chưa thêm subscription thật nào,
+// KHÔNG còn được Dashboard tự động đọc (xem src/lib/supabase/subscriptions.ts).
 export const subscriptions: Subscription[] = [
   {
     id: "notion",

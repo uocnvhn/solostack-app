@@ -1,6 +1,5 @@
-import { DuplicateGroup } from "@/lib/subscription-insights";
-import { Subscription } from "@/lib/mock-data";
-import { daysUntil } from "@/lib/subscription-insights";
+import { DuplicateGroup, daysUntil } from "@/lib/subscription-insights";
+import { Subscription } from "@/lib/types";
 
 type AlertsPanelProps = {
   duplicateGroups: DuplicateGroup[];

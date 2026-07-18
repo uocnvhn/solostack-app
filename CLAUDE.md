@@ -41,10 +41,11 @@ Chi tiết ý tưởng gốc và bảng điểm: xem `~/saas-ideashunter-agent.m
 ## Trạng thái hiện tại
 
 - [x] Scaffold Next.js + Tailwind
-- [x] MVP UI với dữ liệu giả (`src/lib/mock-data.ts`, dashboard vẫn đang đọc từ đây, chưa đổi sang Supabase)
 - [x] Nối Supabase database — client (`src/lib/supabase/`), schema `profiles`/`subscriptions` với RLS đã chạy trong Supabase SQL Editor, kết nối đã verify OK
-- [ ] Chuyển Dashboard từ đọc mock-data.ts sang đọc Supabase thật
-- [ ] Authentication (đăng ký/đăng nhập) — làm SAU CÙNG theo nguyên tắc Giai đoạn 7
+- [x] Authentication (đăng ký/đăng nhập/đăng xuất qua `src/app/actions/auth.ts`, `proxy.ts` bảo vệ trang `/`) — build + redirect đã verify, luồng đăng ký thật với email thật CHƯA test tay
+- [x] Dashboard đọc dữ liệu Supabase thật (`src/lib/supabase/subscriptions.ts`), không còn dùng `mock-data.ts` (file này vẫn giữ lại làm tham khảo, không còn được import bởi app)
+- [x] Form thêm subscription thủ công (`AddSubscriptionForm` + server action `addSubscription`, có validate server-side)
+- [ ] "Quên mật khẩu" chưa có UI (theo tài liệu Giai đoạn 4c nên có, backlog)
 - [ ] Nối Plaid (kết nối ngân hàng thật)
 - [ ] Tính năng AI phân loại giao dịch + phát hiện trùng lặp
 - [ ] Deploy Vercel
