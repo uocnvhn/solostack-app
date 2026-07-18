@@ -41,8 +41,10 @@ Chi tiết ý tưởng gốc và bảng điểm: xem `~/saas-ideashunter-agent.m
 ## Trạng thái hiện tại
 
 - [x] Scaffold Next.js + Tailwind
-- [ ] MVP UI với dữ liệu giả (đang làm)
-- [ ] Nối Supabase (database + auth)
+- [x] MVP UI với dữ liệu giả (`src/lib/mock-data.ts`, dashboard vẫn đang đọc từ đây, chưa đổi sang Supabase)
+- [x] Nối Supabase database — client (`src/lib/supabase/`), schema `profiles`/`subscriptions` với RLS đã chạy trong Supabase SQL Editor, kết nối đã verify OK
+- [ ] Chuyển Dashboard từ đọc mock-data.ts sang đọc Supabase thật
+- [ ] Authentication (đăng ký/đăng nhập) — làm SAU CÙNG theo nguyên tắc Giai đoạn 7
 - [ ] Nối Plaid (kết nối ngân hàng thật)
 - [ ] Tính năng AI phân loại giao dịch + phát hiện trùng lặp
 - [ ] Deploy Vercel
