@@ -42,10 +42,10 @@ Chi tiết ý tưởng gốc và bảng điểm: xem `~/saas-ideashunter-agent.m
 
 - [x] Scaffold Next.js + Tailwind
 - [x] Nối Supabase database — client (`src/lib/supabase/`), schema `profiles`/`subscriptions` với RLS đã chạy trong Supabase SQL Editor, kết nối đã verify OK
-- [x] Authentication (đăng ký/đăng nhập/đăng xuất qua `src/app/actions/auth.ts`, `proxy.ts` bảo vệ trang `/`) — build + redirect đã verify, luồng đăng ký thật với email thật CHƯA test tay
+- [x] Authentication (đăng ký/đăng nhập/đăng xuất qua `src/app/actions/auth.ts`, `proxy.ts` bảo vệ trang `/`) — đã test tay với email thật, xác nhận email hoạt động đúng (đã sửa email template Supabase để khớp route `/auth/confirm`, xem lịch sử chat)
 - [x] Dashboard đọc dữ liệu Supabase thật (`src/lib/supabase/subscriptions.ts`), không còn dùng `mock-data.ts` (file này vẫn giữ lại làm tham khảo, không còn được import bởi app)
 - [x] Form thêm subscription thủ công (`AddSubscriptionForm` + server action `addSubscription`, có validate server-side)
-- [x] Google OAuth (`GoogleSignInButton` + `src/app/auth/callback/route.ts`) — code xong, build OK; CẦN user tự tạo OAuth Client ID trên Google Cloud Console + bật provider trong Supabase Dashboard trước khi nút này chạy được thật
+- [x] Google OAuth (`GoogleSignInButton` + `src/app/auth/callback/route.ts`) — user đã tạo OAuth Client ID trên Google Cloud Console + bật provider trong Supabase Dashboard
 - [ ] "Quên mật khẩu" chưa có UI (theo tài liệu Giai đoạn 4c nên có, backlog)
 - [ ] Nối Plaid (kết nối ngân hàng thật)
 - [ ] Tính năng AI phân loại giao dịch + phát hiện trùng lặp
