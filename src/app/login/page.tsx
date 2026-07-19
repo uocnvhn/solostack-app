@@ -27,9 +27,14 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="text-sm font-medium text-black/70 dark:text-white/70">
-              Mật khẩu
-            </label>
+            <div className="flex items-center justify-between">
+              <label htmlFor="password" className="text-sm font-medium text-black/70 dark:text-white/70">
+                Mật khẩu
+              </label>
+              <Link href="/forgot-password" className="text-xs font-medium text-blue-600 dark:text-blue-400">
+                Quên mật khẩu?
+              </Link>
+            </div>
             <input
               id="password"
               name="password"

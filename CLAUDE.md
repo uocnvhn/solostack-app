@@ -46,7 +46,7 @@ Chi tiết ý tưởng gốc và bảng điểm: xem `~/saas-ideashunter-agent.m
 - [x] Dashboard đọc dữ liệu Supabase thật (`src/lib/supabase/subscriptions.ts`), không còn dùng `mock-data.ts` (file này vẫn giữ lại làm tham khảo, không còn được import bởi app)
 - [x] Form thêm subscription thủ công (`AddSubscriptionForm` + server action `addSubscription`, có validate server-side)
 - [x] Google OAuth (`GoogleSignInButton` + `src/app/auth/callback/route.ts`) — user đã tạo OAuth Client ID trên Google Cloud Console + bật provider trong Supabase Dashboard
-- [ ] "Quên mật khẩu" chưa có UI (theo tài liệu Giai đoạn 4c nên có, backlog)
+- [x] "Quên mật khẩu" (`/forgot-password` → `/update-password`, dùng chung route `/auth/confirm?type=recovery`) — code + build xong; CẦN user tự sửa template email "Reset Password" trong Supabase giống cách đã sửa "Confirm signup", chưa test tay
 - [ ] Nối Plaid (kết nối ngân hàng thật)
 - [ ] Tính năng AI phân loại giao dịch + phát hiện trùng lặp
 - [ ] Deploy Vercel
