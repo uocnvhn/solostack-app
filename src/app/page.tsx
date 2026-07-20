@@ -3,8 +3,11 @@ import { SummaryStats } from "@/components/SummaryStats";
 import { AlertsPanel } from "@/components/AlertsPanel";
 import { SubscriptionList } from "@/components/SubscriptionList";
 import { AddSubscriptionForm } from "@/components/AddSubscriptionForm";
+import { ConnectBankButton } from "@/components/ConnectBankButton";
+import { SyncTransactionsButton } from "@/components/SyncTransactionsButton";
 import { createClient } from "@/lib/supabase/server";
 import { getSubscriptions } from "@/lib/supabase/subscriptions";
+import { getPlaidItems } from "@/lib/supabase/plaid-items";
 import { signOut } from "@/app/actions/auth";
 import {
   getTotalMonthlyCost,
@@ -24,6 +27,7 @@ export default async function Home() {
   }
 
   const subscriptions = await getSubscriptions();
+  const plaidItems = await getPlaidItems();
   const totalMonthlyCost = getTotalMonthlyCost(subscriptions);
   const duplicateGroups = getDuplicateGroups(subscriptions);
   const expiringTrials = getExpiringTrials(subscriptions);
@@ -58,6 +62,23 @@ export default async function Home() {
                 : "Dữ liệu subscription thật của bạn, lưu trong Supabase."}
             </p>
           </div>
+        </div>
+
+        <div className="flex flex-col gap-3 rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+          <div className="flex flex-wrap gap-3">
+            <ConnectBankButton />
+            {plaidItems.length > 0 && <SyncTransactionsButton />}
+          </div>
+          {plaidItems.length > 0 && (
+            <ul className="text-sm text-black/60 dark:text-white/60">
+              {plaidItems.map((item) => (
+                <li key={item.id}>
+                  Đã kết nối: {item.institutionName ?? "Ngân hàng"} (
+                  {new Date(item.createdAt).toLocaleDateString("vi-VN")})
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <AddSubscriptionForm />

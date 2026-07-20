@@ -47,6 +47,6 @@ Chi tiết ý tưởng gốc và bảng điểm: xem `~/saas-ideashunter-agent.m
 - [x] Form thêm subscription thủ công (`AddSubscriptionForm` + server action `addSubscription`, có validate server-side)
 - [x] Google OAuth (`GoogleSignInButton` + `src/app/auth/callback/route.ts`) — user đã tạo OAuth Client ID trên Google Cloud Console + bật provider trong Supabase Dashboard
 - [x] "Quên mật khẩu" (`/forgot-password` → `/update-password`, dùng chung route `/auth/confirm?type=recovery`) — code + build xong; CẦN user tự sửa template email "Reset Password" trong Supabase giống cách đã sửa "Confirm signup", chưa test tay
-- [ ] Nối Plaid (kết nối ngân hàng thật)
-- [ ] Tính năng AI phân loại giao dịch + phát hiện trùng lặp
-- [ ] Deploy Vercel
+- [x] Nối Plaid Sandbox (`src/lib/plaid/client.ts`, bảng `plaid_items` với RLS, `ConnectBankButton` + server actions `createLinkToken`/`exchangePublicToken`) — code + build xong, CẦN user tự chạy migration `0002_plaid_items.sql` và test tay qua Plaid Link Sandbox (`user_good`/`pass_good`), chưa xác nhận kết quả
+- [x] Phát hiện subscription từ giao dịch (rule-based, không gọi AI API — `src/lib/subscription-rules.ts` bảng tra cứu tĩnh theo tên merchant, `syncTransactions` action, nút "Đồng bộ giao dịch") — code + build xong, CẦN chạy migration `0003_subscriptions_merchant_key.sql` và test tay, chưa xác nhận kết quả. Có thể nâng cấp lên Claude API thật sau nếu bảng tra cứu tĩnh không đủ.
+- [x] Deploy Vercel — đã deploy production tại `https://solostack-app-two.vercel.app`, GitHub `https://github.com/VanQuocThin/solostack-app` đã connect với Vercel để tự deploy khi push
