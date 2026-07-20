@@ -19,7 +19,7 @@ Chi tiết ý tưởng gốc và bảng điểm: xem `~/saas-ideashunter-agent.m
 
 - Next.js 16 (App Router) + TypeScript — front-end và back-end (route handlers trong `app/api/`)
 - Tailwind CSS 4 — style
-- Supabase — database + authentication (sẽ thêm ở giai đoạn Database, chưa nối lúc này)
+- Supabase — database + authentication (đã nối thật)
 - Plaid — kết nối ngân hàng/thẻ, thị trường mục tiêu ban đầu là US/EU (Plaid không hỗ trợ ngân hàng Việt Nam)
 - Vercel — deploy
 
@@ -28,7 +28,7 @@ Chi tiết ý tưởng gốc và bảng điểm: xem `~/saas-ideashunter-agent.m
 - Component viết bằng TypeScript, đặt tên PascalCase.
 - Tách riêng theo lớp: phần front-end để riêng file, phần back-end/route handler để riêng file, phần gọi database để riêng file, phần authentication để riêng file, phần nhúng AI (phân loại giao dịch, phát hiện trùng lặp) để riêng file — không gộp nhiều lớp vào một file.
 - Mọi validate quan trọng (dữ liệu giao dịch, quyền truy cập) phải chạy lại ở server, không chỉ ở client.
-- Giai đoạn MVP hiện tại: dùng dữ liệu giả (JSON cục bộ trong `src/lib/mock-data.ts`), CHƯA nối Supabase/Plaid thật — xem mục "Trạng thái hiện tại" bên dưới.
+- Đã nối Supabase + Plaid thật (xem "Trạng thái hiện tại" bên dưới) — `src/lib/mock-data.ts` chỉ còn giữ làm tham khảo, không dùng nữa.
 - Sau mỗi tính năng lớn, tự chạy `npm run build` để chắc chắn không lỗi build trước khi báo xong.
 
 ## Quy trình làm việc
