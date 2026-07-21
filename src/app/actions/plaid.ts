@@ -16,10 +16,33 @@ export async function createLinkToken(): Promise<string> {
     throw new Error("Bạn cần đăng nhập.");
   }
 
+  // Toàn bộ quốc gia Plaid hỗ trợ (US + EU) — Plaid không hỗ trợ ngân hàng Việt Nam
+  // hay các nước ngoài danh sách này, xem CLAUDE.md.
   const response = await plaidClient.linkTokenCreate({
     client_name: "SoloStack",
     language: "en",
-    country_codes: [CountryCode.Us],
+    country_codes: [
+      CountryCode.Us,
+      CountryCode.Gb,
+      CountryCode.Es,
+      CountryCode.Nl,
+      CountryCode.Fr,
+      CountryCode.Ie,
+      CountryCode.Ca,
+      CountryCode.De,
+      CountryCode.It,
+      CountryCode.Pl,
+      CountryCode.Dk,
+      CountryCode.No,
+      CountryCode.Se,
+      CountryCode.Ee,
+      CountryCode.Lt,
+      CountryCode.Lv,
+      CountryCode.Pt,
+      CountryCode.Be,
+      CountryCode.At,
+      CountryCode.Fi,
+    ],
     user: { client_user_id: user.id },
     products: [Products.Transactions],
   });
