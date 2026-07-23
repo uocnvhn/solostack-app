@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SoloStack
 
-## Getting Started
+SaaS giúp freelancer và small team theo dõi subscription đang trả tiền (qua giao dịch ngân hàng/thẻ), phát hiện gói trùng chức năng và trial sắp hết hạn.
 
-First, run the development server:
+**Production:** [solostack-app-two.vercel.app](https://solostack-app-two.vercel.app)  
+**Repo:** [github.com/VanQuocThin/solostack-app](https://github.com/VanQuocThin/solostack-app)
+
+## Tính năng
+
+- Đăng ký / đăng nhập (email + Google OAuth), quên mật khẩu
+- Dashboard subscription (Supabase + RLS)
+- Thêm subscription thủ công
+- Kết nối ngân hàng/thẻ qua Plaid Link (Sandbox)
+- Đồng bộ giao dịch và nhận diện subscription (rule-based theo merchant)
+- Cảnh báo trial sắp hết / gói có thể trùng chức năng
+
+> Plaid chưa hỗ trợ ngân hàng Việt Nam. Thị trường mục tiêu ban đầu: US/EU.
+
+## Stack
+
+| Thành phần | Công nghệ |
+|---|---|
+| App | Next.js 16 (App Router) + TypeScript |
+| UI | Tailwind CSS 4 |
+| Database + Auth | Supabase (Postgres, Auth, RLS) |
+| Banking | Plaid |
+| Deploy | Vercel |
+
+## Yêu cầu
+
+- Node.js 20+ (LTS khuyến nghị)
+- Tài khoản [Supabase](https://supabase.com)
+- Tài khoản [Plaid](https://dashboard.plaid.com) (Sandbox đủ cho dev)
+
+## Cài đặt nhanh
+
+```bash
+git clone https://github.com/VanQuocThin/solostack-app.git
+cd solostack-app
+npm install
+cp .env.example .env.local   # hoặc tạo tay file .env.local
+```
+
+Điền biến môi trường, chạy migration SQL, rồi:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Lệnh | Mô tả |
+|---|---|
+| `npm run dev` | Dev server (Turbopack) |
+| `npm run build` | Build production |
+| `npm run start` | Chạy bản đã build |
+| `npm run lint` | ESLint |
 
-## Learn More
+## Biến môi trường
 
-To learn more about Next.js, take a look at the following resources:
+Tạo `.env.local` (đã nằm trong `.gitignore` — **không commit**):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+PLAID_CLIENT_ID=
+PLAID_SECRET=
+PLAID_ENV=sandbox
+```
 
-## Deploy on Vercel
+| Biến | Nguồn |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API / trang tổng quan project |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Settings → API Keys → **Publishable** (hoặc Legacy `anon` `public`) |
+| `PLAID_CLIENT_ID` / `PLAID_SECRET` | [Plaid Dashboard](https://dashboard.plaid.com) → Keys |
+| `PLAID_ENV` | `sandbox` khi dev; `production` khi live |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+App chạy được login/dashboard chỉ với cặp Supabase. Plaid chỉ cần khi test nối ngân hàng.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Database (bắt buộc trước khi dùng dashboard)
+
+Trong Supabase SQL Editor, chạy lần lượt:
+
+1. `supabase/migrations/0001_init.sql` — `profiles`, `subscriptions`, RLS, trigger tạo profile
+2. `supabase/migrations/0002_plaid_items.sql` — `plaid_items` + RLS
+3. `supabase/migrations/0003_subscriptions_merchant_key.sql` — cột `merchant_key`
+
+Nếu đã đăng ký user **trước** khi có bảng `profiles`, chạy thêm:
+
+```sql
+insert into public.profiles (id, email)
+select id, email from auth.users
+on conflict (id) do nothing;
+```
+
+## Cấu hình Auth (Supabase)
+
+**Authentication → URL Configuration**
+
+- Site URL: `http://localhost:3000` (local) hoặc domain Vercel
+- Redirect URLs:
+  - `http://localhost:3000/auth/confirm`
+  - `http://localhost:3000/auth/callback`
+  - tương ứng trên production
+
+**Email templates** (Confirm signup / Reset password): link phải trỏ `/auth/confirm` kèm `token_hash` và `type`.
+
+**Google OAuth** (tuỳ chọn): bật provider Google trong Supabase + OAuth Client trên Google Cloud. Callback Supabase: `https://<project-ref>.supabase.co/auth/v1/callback`.
+
+## Test Plaid Sandbox
+
+1. Đăng nhập → kết nối ngân hàng  
+2. Credentials sandbox: `user_good` / `pass_good`  
+3. Bấm **Đồng bộ giao dịch** để nhận diện subscription  
+
+## Cấu trúc
+
+```
+src/
+  app/              # Pages, auth routes, server actions
+  components/       # UI
+  lib/
+    supabase/       # Client/server + queries
+    plaid/          # Plaid client + transactions
+    subscription-rules.ts
+    subscription-insights.ts
+  proxy.ts          # Session + bảo vệ route
+supabase/migrations/
+public/             # Static assets (nếu có)
+```
+
+## Deploy (Vercel)
+
+Push `main` sẽ tự deploy nếu đã nối GitHub ↔ Vercel.
+
+Trên Vercel: khai báo cùng biến môi trường như `.env.local`, rồi cập nhật Supabase Site URL / Redirect URLs cho domain production.
+
+## Ghi chú
+
+- Validate quan trọng chạy lại ở **server**, không chỉ client.
+- Nhận diện subscription hiện **rule-based** (`subscription-rules.ts`), chưa gọi AI API.
+- Không hard-code secret vào code.
+- Không có tài khoản demo sẵn — tự **Đăng ký** hoặc đăng nhập Google.
+
+## License
+
+Private / chưa công bố license công khai.
