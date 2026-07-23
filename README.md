@@ -3,7 +3,7 @@
 SaaS giúp freelancer và small team theo dõi subscription đang trả tiền (qua giao dịch ngân hàng/thẻ), phát hiện gói trùng chức năng và trial sắp hết hạn.
 
 **Production:** [solostack-app-two.vercel.app](https://solostack-app-two.vercel.app)  
-**Repo:** [github.com/VanQuocThin/solostack-app](https://github.com/VanQuocThin/solostack-app)
+**Repo:** [github.com/uocnvhn/solostack-app](https://github.com/uocnvhn/solostack-app)
 
 ## Tính năng
 
@@ -35,7 +35,7 @@ SaaS giúp freelancer và small team theo dõi subscription đang trả tiền (
 ## Cài đặt nhanh
 
 ```bash
-git clone https://github.com/VanQuocThin/solostack-app.git
+git clone https://github.com/uocnvhn/solostack-app.git
 cd solostack-app
 npm install
 cp .env.example .env.local   # hoặc tạo tay file .env.local
